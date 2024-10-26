@@ -1,12 +1,25 @@
+/*
+
+CODIGO NAO CONCLUIDO AINDA
+
+Período Noturno
+Leonardo Arantes Lopes Macedo
+RA: 176558
+macedoleonardo870@gmail.com
+*/
+
 #include <stdio.h>
 
 int verify (int* bool, int* x, int len) 
 // bool = 0 (false) => vetor x tem algum valor 0, do contrário: bool = 1 (true)
-//
 {
     for (int i = 0; i < len; i++)
     {
-        bool = bool && x[i];
+        if (x[i] && *bool)
+            *bool = 1;
+        else
+            *bool = 0;
+        //bool = bool && x[i];
     }
 }
 
@@ -19,12 +32,12 @@ int main ()
 
     for (instancia = 1; instancia <= numTabuleiros; instancia++)
     {
-        int isTrue = 1; // --------------------------------- procurar como usar booleans --------------------------------
+        int isTrue = 1; // algo como uma boolean
         // 1 => resolução viável 
-        // 0 => não é uma resolução
+        // 0 => resolução não viável
 
-    // loop input matriz
-        for (int i = 0; i < numTabuleiros; i++)
+        // input matriz
+        for (int i = 0; i < 10; i++)
         {
             scanf("%d %d %d %d %d %d %d %d %d", &m[i][0], &m[i][1], &m[i][2], &m[i][3], &m[i][4], &m[i][5], &m[i][6], &m[i][7], &m[i][8]);
         }
@@ -50,7 +63,7 @@ int main ()
             }
 
             // verificar veracidade do 3 x 3
-            verify (isTrue, count, 10);
+            verify (&isTrue, count, 10);
             if (isTrue == 0)
                 break;
             
@@ -67,13 +80,43 @@ int main ()
                 break;
             }
         }
-        for (int i = 0; i < 10; i++)
-        {
+
+        // verificar linhas
+        if (isTrue)
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    count[j] = 0;
+                }
+                for (int j = 0; j < 10; j++)
+                {
+                    // soma 1 pra tornar verdadeiro. Se um número repetir algo vai ficar como false
+                    count[m[i][j]]++;
+                }
+                verify (&isTrue, count, 10);
+                if (isTrue == 0)
+                    break;
+            }
+
+        // verificar colunas
+        if (isTrue)
             for (int j = 0; j < 10; j++)
             {
-                
+                for (int i = 0; i < 10; i++)
+                {
+                    count[i] = 0;
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    // soma 1 pra tornar verdadeiro. Se um número repetir algo vai ficar como false
+                    count[m[i][j]]++;
+                }
+                verify (&isTrue, count, 10);
+                if (isTrue == 0)
+                    break;
             }
-        }
+
         printf ("Instancia %d\n", instancia);
         if (isTrue == 1)
             printf ("SIM\n\n");
