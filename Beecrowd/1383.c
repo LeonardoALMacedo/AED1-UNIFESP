@@ -13,8 +13,8 @@ int isTrue; // int pra marcar a veracidade da soluçao: 1 = true, 0 = false;
 
 
 int alLinha (int linha)
-// analiza repetição de algarismos na LINHA
-// return 1 => não tem : return 0 => tem repetição
+    // analiza repetição de algarismos na LINHA
+    // return 1 => não tem : return 0 => tem repetição
 {
     int algCount[10] = {};
     for (int i = 0; i < 9; i++)
@@ -28,8 +28,8 @@ int alLinha (int linha)
 }
 
 int alColuna (int coluna)
-// analiza repetição de algarismos na COLUNA
-// return 1 => não tem : return 0 => tem repetição
+    // analiza repetição de algarismos na COLUNA
+    // return 1 => não tem : return 0 => tem repetição
 {
     int algCount[10] = {};
     for (int i = 0; i < 9; i++)
