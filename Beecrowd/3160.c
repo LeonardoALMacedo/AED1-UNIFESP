@@ -1,44 +1,97 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-typedef struct nome
+typedef struct cel
 {
-    int conteudo;
-    struct nome * seg;
-}nome;
+    char         content[50];
+    struct cel * next;
+} list;
 
-typedef struct lista
+void printall (list * l)
 {
-    struct nome * nome;
-    struct lista * seg;
-}lista;
+    printf ("%s", l->content);
+    if (l->next)
+        return printall (l->next);
+}
 
-int main ()
+void printif (list * l, char name[], list * l2, int * counter)
 {
-    char c;
-    lista * l = malloc(sizeof(lista));
-    l->seg = malloc(sizeof(lista));
-    lista * p = l->seg;
+    int n = strlen(name);
+    if (n > strlen(l->content))
+        n = strlen(l->content);
+    n--;
 
-    p->nome = malloc (sizeof(nome));
-    nome * n = p->nome;
-
-    while (1)
+    for (int i = 0; i < n; i++)
     {
-        scanf("%c", &c);
-        if (c == " ")
+        if (l->content[i] != name[i])
         {
-            p->seg = malloc(sizeof(lista));
-            p = p->seg;
-            p->nome = malloc(sizeof(nome));
-            n = p->nome;
-            continue;
-        }
-        if (c == "\n")
+            n = 0;
             break;
-        
+        }
     }
-    
-    
+
+    if (!n)
+    printf ("%s ", l->content);
+
+    else 
+    {
+        printall (l2);
+        *counter--;
+        printf ("%s ", l->content);
+    }
+
+    if (l->next)
+        return printif (l->next, name, l2, counter);
+}
+
+int main()
+{
+    int x = 1, *counter = &x;
+    char c, name[50];
+    list l1,l2;
+    list * l;
+
+    int i = 0;
+    l = &l1;
+    l->next =  malloc(sizeof(list));
+    scanf("%c", l->content[0]);
+    scanf("%c", &c);
+    while (l->content[i] != "\n")
+    {
+        if (l->content[i] != " ")
+        {
+            l->next = malloc(sizeof(list));
+            l = l->next;
+        }
+        i++;
+        l->content[i] = c;
+        scanf("%c", &c);
+    }
+
+
+    i = 0;
+    l = &l2;
+    l->next = malloc(sizeof(list));
+    scanf("%c", l->content[0]);
+    scanf("%c", &c);
+    while (l->content[i] != "\n")
+    {
+        if (l->content[i] != " ")
+        {
+            l->next = malloc(sizeof(list));
+            l = l->next;
+        }
+        i++;
+        l->content[i] = c;
+        scanf("%c", &c);
+    }
+    scanf("%s", &name);
+
+    printif (&l1, name, &l2, counter);
+
+    if (x)
+        printall(&l2);
+
     return 0;
 }
