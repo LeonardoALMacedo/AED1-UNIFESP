@@ -11,9 +11,30 @@ int max (int v[], n) {
     return x;
 }
 
-void addFila (int v[], int x, int f) {
+void pushStack (int v[], int * f, int x) {
+    v[++*f] = x;
+}
+
+// v[] só tem int > 0 && < 100
+void popStack (int v[], int * f) {
+    v[*f--] = 0;
+}
+
+void pushQueue (int v[], int * f, int x) {
+    v[++*f] = x;
+}
+
+void popQueue (int v[], int * r) {
+    v[*f--] = 0;
+}
+
+void PQueueOrganize ()
+
+void pushPQueue (int v[], int * f, int n) {
     
 }
+
+void popPQueue (int v[], int * f, int n)
 
 int main () {
     int n, acao, valor;
@@ -44,6 +65,6 @@ int main () {
         }
         //
     }
-    
+
     return 0;
 }
