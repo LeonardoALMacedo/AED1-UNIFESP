@@ -1,97 +1,130 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-typedef struct cel
-{
-    char         content[50];
-    struct cel * next;
-} list;
+typedef struct Node {
+    char nome[50];
+    struct Node* next;
+} Node;
 
-void printall (list * l)
-{
-    printf ("%s", l->content);
-    if (l->next)
-        return printall (l->next);
+
+Node* createNode (char* nome) {
+    Node *nova = (Node *) malloc (sizeof(Node));
+    strcpy (nova->nome, nome);
+    nova->next = NULL;
+    return nova;
 }
 
-void printif (list * l, char name[], list * l2, int * counter)
-{
-    int n = strlen(name);
-    if (n > strlen(l->content))
-        n = strlen(l->content);
-    n--;
-
-    for (int i = 0; i < n; i++)
-    {
-        if (l->content[i] != name[i])
-        {
-            n = 0;
-            break;
-        }
+void insereFinal (Node** head, char* nome) {
+    Node* nova = createNode (nome);
+    
+    if (*head == NULL) {
+        *head = nova;
+        return;
     }
+    
+    Node* atual = *head;
+    while (atual->next != NULL)
+        atual = atual->next;
 
-    if (!n)
-    printf ("%s ", l->content);
-
-    else 
-    {
-        printall (l2);
-        *counter--;
-        printf ("%s ", l->content);
-    }
-
-    if (l->next)
-        return printif (l->next, name, l2, counter);
+    atual->next = nova;
 }
 
-int main()
-{
-    int x = 1, *counter = &x;
-    char c, name[50];
-    list l1,l2;
-    list * l;
+void juntaLista (Node** head, Node* novosAmigos, char* amigo) {
+    if (*head == NULL)
+        return;
+    
+    if (strcmp ((*head)->nome, amigo) == 0) {
+        Node* temp = novosAmigos;
+        while (temp->next != NULL)
+            temp = temp->next;
 
-    int i = 0;
-    l = &l1;
-    l->next =  malloc(sizeof(list));
-    scanf("%c", l->content[0]);
-    scanf("%c", &c);
-    while (l->content[i] != "\n")
-    {
-        if (l->content[i] != " ")
-        {
-            l->next = malloc(sizeof(list));
-            l = l->next;
-        }
-        i++;
-        l->content[i] = c;
-        scanf("%c", &c);
+        temp->next = *head;
+        *head = novosAmigos;
+        return;
     }
-
-
-    i = 0;
-    l = &l2;
-    l->next = malloc(sizeof(list));
-    scanf("%c", l->content[0]);
-    scanf("%c", &c);
-    while (l->content[i] != "\n")
-    {
-        if (l->content[i] != " ")
-        {
-            l->next = malloc(sizeof(list));
-            l = l->next;
-        }
-        i++;
-        l->content[i] = c;
-        scanf("%c", &c);
+    
+    Node* atual = *head;
+    Node* anterior = NULL;
+    
+    while (atual != NULL && strcmp (atual->nome, amigo) != 0) {
+        anterior = atual;
+        atual = atual->next;
     }
-    scanf("%s", &name);
+    
+    if (atual != NULL) {
+        Node* temp = novosAmigos;
 
-    printif (&l1, name, &l2, counter);
+        while (temp->next != NULL)
+            temp = temp->next;
 
-    if (x)
-        printall(&l2);
+        anterior->next = novosAmigos;
+        temp->next = atual;
+    }
+}
 
+Node* criaListaPelaString (char* linha) {
+    Node* head = NULL;
+    char* token = strtok (linha, " ");
+    
+    while (token != NULL) {
+        insereFinal (&head, token);
+        token = strtok (NULL, " ");
+    }
+    
+    return head;
+}
+
+void printLista (Node* head) {
+    Node* atual = head;
+    while (atual != NULL) {
+        printf("%s", atual->nome);
+        if (atual->next != NULL) {
+            printf(" ");
+        }
+        atual = atual->next;
+    }
+    printf("\n");
+}
+
+void freeLista (Node* head) {
+    Node* atual = head;
+    while (atual != NULL) {
+        Node* temp = atual;
+        atual = atual->next;
+        free (temp);
+    }
+}
+
+int main () {
+    char linha[5000];
+    Node *listaAtual = NULL, *novosAmigos = NULL;
+    
+    fgets (linha, sizeof (linha), stdin);
+    linha[strcspn(linha, "\n")] = 0;
+    listaAtual = criaListaPelaString (linha);
+    
+    fgets (linha, sizeof (linha), stdin);
+    linha[strcspn(linha, "\n")] = 0;
+    novosAmigos = criaListaPelaString (linha);
+    
+    fgets (linha, sizeof (linha), stdin);
+    linha[strcspn (linha, "\n")] = 0;
+    
+    if (strcmp (linha, "nao") != 0)
+        juntaLista (&listaAtual, novosAmigos, linha);
+    else {
+        Node* atual = listaAtual;
+
+        while (atual->next != NULL)
+            atual = atual->next;
+
+        atual->next = novosAmigos;
+    }
+    
+    printLista (listaAtual);
+    
+    freeLista (listaAtual);
+    
     return 0;
 }
