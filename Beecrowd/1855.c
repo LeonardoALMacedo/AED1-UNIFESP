@@ -6,7 +6,7 @@ int x, y;
 
 void percorreDireita (int *i, int *j, char mapa[x][y]) {
     while (*i < x) {
-        if (mapa[*i][*j] == '>' || mapa[*i][*j] == '<' || mapa[*i][*j] == '^' || mapa[*i][*j] == 'v' || mapa[*i][*j] == '*')
+        if (mapa[*i][*j] != '.')
             break;
         *i++;
     }
@@ -14,7 +14,7 @@ void percorreDireita (int *i, int *j, char mapa[x][y]) {
 
 void percorreEsquerda (int *i, int *j, char mapa[x][y]) {
     while (*i >= 0) {
-        if (mapa[*i][*j] == '>' || mapa[*i][*j] == '<' || mapa[*i][*j] == '^' || mapa[*i][*j] == 'v' || mapa[*i][*j] == '*')
+        if (mapa[*i][*j] != '.')
             break;
         *i--;
     }
@@ -22,7 +22,7 @@ void percorreEsquerda (int *i, int *j, char mapa[x][y]) {
 
 void percorreCima (int *i, int *j, char mapa[x][y]) {
     while (*j >= 0) {
-        if (mapa[*i][*j] == '>' || mapa[*i][*j] == '<' || mapa[*i][*j] == '^' || mapa[*i][*j] == 'v' || mapa[*i][*j] == '*')
+        if (mapa[*i][*j] != '.')
             break;
         *j--;
     }
@@ -30,7 +30,7 @@ void percorreCima (int *i, int *j, char mapa[x][y]) {
 
 void percorreBaixo (int *i, int *j, char mapa[x][y]) {
     while (*j < y) {
-        if (mapa[*i][*j] == '>' || mapa[*i][*j] == '<' || mapa[*i][*j] == '^' || mapa[*i][*j] == 'v' || mapa[*i][*j] == '*')
+        if (mapa[*i][*j] != '.')
             break;
         *j++;
     }
@@ -61,18 +61,20 @@ int main () {
             percorreDireita (&i, &j, mapa);
         }
         else if (mapa[i][j] == '<') {
-            mapa[i++][j] = '0';
+            mapa[i--][j] = '0';
             percorreEsquerda (&i, &j, mapa);
         }
         else if (mapa[i][j] == '^') {
-            mapa[i++][j] = '0';
+            mapa[i][j--] = '0';
             percorreCima (&i, &j, mapa);
         }
         else if (mapa[i][j] == 'v') {
-            mapa[i++][j] = '0';
+            mapa[i][j++] = '0';
             percorreBaixo (&i, &j, mapa);
         }
     }
     
     return 0;
+
+
 }
