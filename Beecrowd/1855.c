@@ -33,24 +33,28 @@ int main () {
         mapa[i][j] = '0';
 
         if (atual == '>') {
-            while (j + 1 < x && mapa[i][j + 1] == '.')
+            do {
                 j++;
-            j++;
+            }
+            while (j < x && mapa[i][j] == '.');
         }
         else if (atual == '<') {
-            while (j - 1 >= 0 && mapa[i][j - 1] == '.')
+            do {
                 j--;
-            j--;
+            }
+            while (j >= 0 && mapa[i][j] == '.');
         }
         else if (atual == '^') {
-            while (i - 1 >= 0 && mapa[i - 1][j] == '.')
+            do {
                 i--;
-            i--;
+            }
+            while (i >= 0 && mapa[i][j] == '.');
         }
         else if (atual == 'v') {
-            while (i + 1 < y && mapa[i + 1][j] == '.')
+            do {
                 i++;
-            i++;
+            }
+            while (i < y && mapa[i][j] == '.');
         }
         else {
             printf("!\n");
