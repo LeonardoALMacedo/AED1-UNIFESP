@@ -6,7 +6,7 @@ int x, y;
 int main () {
     scanf ("%d %d\n", &x, &y);
 
-    char mapa[100][100];
+    char mapa[y][x];
 
     for (int i = 0; i < y; i++)
         gets (mapa[i]);
